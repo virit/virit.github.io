@@ -4,13 +4,19 @@
   
   
   <entry>
-    <title>使用wsl2编译jdk21</title>
+    <title>使用wsl2编译OpenJDK21</title>
     <link href="/2023/05/27/build-jdk-21-on-wsl2/"/>
     <url>/2023/05/27/build-jdk-21-on-wsl2/</url>
     
-    <content type="html"><![CDATA[<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>wsl</p>]]></content>
+    <content type="html"><![CDATA[<p>本文基于wsl2(ubuntu 22.04)编译OpenJDK21版本</p><h2 id="获取OpenJDK源码"><a href="#获取OpenJDK源码" class="headerlink" title="获取OpenJDK源码"></a>获取OpenJDK源码</h2><p>首先从github获取OpenJDK21源码</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git clone https://github.com/openjdk/jdk -b jdk-21+24<br></code></pre></td></tr></table></figure><p>tips：构建说明在doc&#x2F;building.md文件中，构建前最好阅读一遍</p><h2 id="安装gcc"><a href="#安装gcc" class="headerlink" title="安装gcc"></a>安装gcc</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install build-essential<br></code></pre></td></tr></table></figure><h2 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install libfreetype6-dev<br>sudo apt-get install fontconfig-devel<br>sudo apt-get install libcups2-dev<br>sudo apt-get install libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev<br>sudo apt-get install libasound2-dev<br>sudo apt-get install libffi-dev<br>sudo apt-get install autoconf<br></code></pre></td></tr></table></figure><h2 id="引导JDK安装"><a href="#引导JDK安装" class="headerlink" title="引导JDK安装"></a>引导JDK安装</h2><p>根据doc&#x2F;building.md中的构建说明，需要准备N-1版本的JDK，也就是20版本的JDK。</p><blockquote><p>The rule of thumb is that the boot JDK for building JDK major version <em>N</em> should be a JDK of major version <em>N-1</em>, so for building JDK 9 a JDK 8 would be suitable as boot JDK.</p></blockquote><p>安装JDK的环节此处不再赘述，输入<code>java -version</code>命令检查JDK版本，确保安装的为20版本的JDK，避免不必要的麻烦。</p><h2 id="运行配置"><a href="#运行配置" class="headerlink" title="运行配置"></a>运行配置</h2><p>此处通过<code>--enabled-debug</code>参数构建debug版本</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">bash configure --enable-debug --with-jvm-variants=server --build=x86_64-unknown-linux-gnu --openjdk-target=x86_64-unknown-linux-gnu<br></code></pre></td></tr></table></figure><p>如果执行失败，一般都会给出详细的提示，按照提示解决即可。</p><h2 id="执行构建"><a href="#执行构建" class="headerlink" title="执行构建"></a>执行构建</h2><p>执行<code>make images</code>命令，构建完成后，在<code>build/&#123;构建配置名称&#125;/jdk</code>目录下就能看到JDK的编译结果了。</p>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>jvm</tag>
+      
+    </tags>
     
   </entry>
   
